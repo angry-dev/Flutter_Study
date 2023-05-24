@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(webtoons);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
