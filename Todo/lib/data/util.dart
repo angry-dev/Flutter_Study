@@ -2,7 +2,7 @@ class Utils {
   // DateTime -> int 로 형변환 하는 함수
   static int getFormatTime(DateTime date) {
     return int.parse(
-        "${date.year}${makeTwoDigit(date.month)}${makeTwoDigit(date.day)}}");
+        "${date.year}${makeTwoDigit(date.month)}${makeTwoDigit(date.day)}");
   }
 
   // 다시 int -> DateTime 으로 형변환 하는 함수
