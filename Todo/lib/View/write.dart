@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/main.dart';
 
-import 'data/todo.dart';
+import 'Model/todo.dart';
+import 'data/Utils/util.dart';
 
 class TodoWritePage extends StatefulWidget {
-  final Todo todo;
+  Todo todo;
 
-  const TodoWritePage({
+  TodoWritePage({
     super.key,
     required this.todo,
   });
@@ -32,7 +34,8 @@ class _TodoWritePageState extends State<TodoWritePage> {
     "0xFFDE5CAA",
   ];
 
-  int idx = 0;
+  int cidx = 0;
+  int ctidx = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +55,24 @@ class _TodoWritePageState extends State<TodoWritePage> {
                 color: Colors.white,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              final myApp = context.findAncestorWidgetOfExactType<MyApp>();
+              if (myApp != null) {
+                setState(() {
+                  widget.todo = Todo(
+                    title: nameController.text,
+                    memo: memoController.text,
+                    category: ctList[ctidx],
+                    color: int.parse(cList[cidx]),
+                    done: 0,
+                    date: Utils.getFormatTime(DateTime.now()),
+                  );
+                  myApp.todos.add(widget.todo);
+                });
+                Navigator.pop(context, widget.todo);
+                print(myApp.todos);
+              }
+            },
           )
         ],
       ),
@@ -75,15 +95,18 @@ class _TodoWritePageState extends State<TodoWritePage> {
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
                 controller: nameController,
+                onChanged: (value) {
+                  print(value);
+                },
               ),
             );
           } else if (index == 2) {
             return InkWell(
               onTap: () {
-                idx++;
-                idx = idx % cList.length;
+                cidx++;
+                cidx = cidx % cList.length;
                 setState(() {
-                  widget.todo.color = int.parse(cList[idx]);
+                  widget.todo.color = int.parse(cList[cidx]);
                 });
               },
               child: Container(
@@ -111,10 +134,10 @@ class _TodoWritePageState extends State<TodoWritePage> {
           } else if (index == 3) {
             return InkWell(
               onTap: () {
-                idx++;
-                idx = idx % ctList.length;
+                ctidx++;
+                ctidx = ctidx % ctList.length;
                 setState(() {
-                  widget.todo.category = ctList[idx];
+                  widget.todo.category = ctList[ctidx];
                 });
               },
               child: Container(
@@ -137,10 +160,10 @@ class _TodoWritePageState extends State<TodoWritePage> {
           } else if (index == 4) {
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "메모",
                     style: TextStyle(
                       fontSize: 20,
@@ -148,8 +171,9 @@ class _TodoWritePageState extends State<TodoWritePage> {
                     ),
                   ),
                   TextField(
+                    controller: memoController,
                     maxLines: 10,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.black),
                       ),

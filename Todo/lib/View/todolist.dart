@@ -6,7 +6,7 @@ import 'data/util.dart';
 
 // ignore: must_be_immutable
 class TodoListPage extends StatelessWidget {
-  late List<Todo> todos = [];
+  List<Todo> todos = [];
 
   TodoListPage({
     super.key,

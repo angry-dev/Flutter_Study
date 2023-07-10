@@ -1,39 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todolist/counter.dart';
 import 'package:todolist/todolist.dart';
 
 import 'data/todo.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Counter(),
+      child: MyApp(),
+    ),
+  );
 }
 
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-  List<Todo> todos = [
-    Todo(
-      title: "강의듣기",
-      memo: "앱 개발",
-      category: "공부",
-      color: Colors.red.value,
-      done: 0,
-      date: 20230524,
-    ),
-    Todo(
-      title: "강의듣기",
-      memo: "앱 개발",
-      category: "공부",
-      color: Colors.blue.value,
-      done: 1,
-      date: 20230524,
-    )
-  ];
+  final List<Todo> todos = [];
 
   MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TodoListPage(todos: todos),
+    return //MaterialApp(
+        //   home: TodoListPage(todos: todos),
+        // );
+
+        const MaterialApp(
+      title: "Provider Example",
+      home: Homepage(),
+    );
+  }
+}
+
+class Homepage extends StatelessWidget {
+  const Homepage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Count:',
+              style: TextStyle(fontSize: 24),
+            ),
+            Consumer<Counter>(
+              builder: (context, counter, child) => Text(
+                '${counter.count}',
+                style:
+                    const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Provider.of<Counter>(context, listen: false).increment();
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
