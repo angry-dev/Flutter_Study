@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/write.dart';
 
+import 'data/database.dart';
 import 'data/todo.dart';
 import 'data/util.dart';
 
@@ -20,27 +21,21 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  List<Todo> todos = [
-    Todo(
-        title: "패스트 캠퍼스 강의듣기",
-        memo: "앱개발 입문 강의 듣기",
-        color: Colors.redAccent.value,
-        done: 0,
-        category: "공부",
-        date: 20210709),
-    Todo(
-        title: "패스트 캠퍼스 강의듣기2",
-        memo: "앱개발 입문 강의 듣기",
-        color: Colors.blueAccent.value,
-        done: 1,
-        category: "공부",
-        date: 20210709),
-  ];
+
+  final dbHelper = DatabaseHelper();
+  List<Todo> todos = [];
+
+  void getTodayTodo() async {
+    todos = await dbHelper.getAllTodoByDate(Utils.getFormatTime(DateTime.now()));
+    setState(() {});
+  }
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getTodayTodo();
   }
 
   // This widget is the root of your application.
