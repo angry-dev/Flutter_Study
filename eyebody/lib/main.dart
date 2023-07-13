@@ -1,4 +1,8 @@
+import 'package:eyebody/utils.dart';
+import 'package:eyebody/view/food.dart';
 import 'package:flutter/material.dart';
+
+import 'data/data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -30,7 +34,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,17 +41,39 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-          ],
-        ),
-      ),
+      body: Center(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          showModalBottomSheet(context: context, backgroundColor: Colors.white, builder: (ctx) {
+            return SizedBox(
+              height: 180,
+              width: 430,
+              child: Column(
+                children: [
+                  TextButton(onPressed: (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => FoodAddPage(
+                        food: Food(
+                          id: null,
+                          date: Utils.getFormatTime(DateTime.now()),
+                          kcal: 0,
+                          memo: "",
+                          type: 0,
+                          image: ""
+                        ),
+                      ))
+                    );
+                  }, child: Text("식단")),
+                  TextButton(onPressed: (){
+
+                  }, child: Text("운동")),
+                  TextButton(onPressed: (){
+
+                  }, child: Text("눈바디")),
+                ],
+              ),
+            );
+          });
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
